@@ -1,0 +1,343 @@
+#!/usr/bin/env elixir
+# jackies_films.exs
+# Complete Elixir conversion of the provided content into data structures and utilities.
+# Run: elixir jackies_films.exs
+
+defmodule JackiesFilms.ContactInfo do
+  @moduledoc """
+  Contact information container.
+
+  Fields:
+    - `customer_hotline` : main customer hotline (string)
+    - `vip_line` : VIP line (string)
+    - `international_hotline` : international customer hotline (string)
+    - `platinum_credit_hotline` : international hotline for platinum credit cards (string)
+    - `complaint_hotline` : customer complaint hotline (string)
+    - `complaint_mailbox` : customer complaint mailbox (string)
+    - Additional fields are stored in `extras` map.
+  """
+
+  @type t :: %__MODULE__{
+          customer_hotline: String.t(),
+          vip_line: String.t(),
+          international_hotline: String.t(),
+          platinum_credit_hotline: String.t(),
+          complaint_hotline: String.t(),
+          complaint_mailbox: String.t(),
+          extras: map()
+        }
+
+  defstruct [
+    :customer_hotline,
+    :vip_line,
+    :international_hotline,
+    :platinum_credit_hotline,
+    :complaint_hotline,
+    :complaint_mailbox,
+    extras: %{}
+  ]
+
+  @spec new(map()) :: t()
+  def new(attrs \\ %{}) when is_map(attrs) do
+    %__MODULE__{
+      customer_hotline: Map.get(attrs, :customer_hotline, "95561"),
+      vip_line: Map.get(attrs, :vip_line, "400-8895-561"),
+      international_hotline: Map.get(attrs, :international_hotline, "86-21-38769999"),
+      platinum_credit_hotline:
+        Map.get(attrs, :platinum_credit_hotline, "86-21-38429696"),
+      complaint_hotline: Map.get(attrs, :complaint_hotline, "95561 to 7"),
+      complaint_mailbox: Map.get(attrs, :complaint_mailbox, "95561@cib.com.cn"),
+      extras: Map.get(attrs, :extras, %{})
+    }
+  end
+
+  @doc """
+  Render contact info as a multiline string.
+  """
+  @spec render(t()) :: String.t()
+  def render(%__MODULE__{} = c) do
+    """
+    Contact us
+    Customer hotline：#{c.customer_hotline}
+    VIP line：#{c.vip_line}
+    International customer hotline：#{c.international_hotline}
+    International customer hotline for platinum credit cards：#{c.platinum_credit_hotline}
+    Complaints and suggestions
+    Customer complaint hotline：#{c.complaint_hotline}
+    Customer complaint mailbox：#{c.complaint_mailbox}
+    """
+    |> String.trim()
+  end
+end
+
+defmodule JackiesFilms.Account do
+  @moduledoc """
+  Account representation converted from the provided content.
+
+  Fields:
+    - `name` : Account name
+    - `danger_label` : text for dangerous action label (e.g., "dangerDelete account")
+    - `description` : descriptive text (e.g., "Manage-Scripting Supplier and ...")
+    - `cloud_provider` : name of cloud provider (string)
+    - `logo` : logo descriptor (string)
+    - `created_by` : creator name
+    - `created_on` : created date (string)
+    - `total_users` : total number of users (integer)
+    - `ibm_saas_account_id` : id string
+    - `contact_info` : `JackiesFilms.ContactInfo` struct
+    - `extras` : map for additional strings like website security statements
+  """
+
+  alias JackiesFilms.ContactInfo
+
+  @type t :: %__MODULE__{
+          name: String.t(),
+          danger_label: String.t(),
+          description: String.t(),
+          cloud_provider: String.t(),
+          logo: String.t(),
+          created_by: String.t(),
+          created_on: String.t(),
+          total_users: non_neg_integer(),
+          ibm_saas_account_id: String.t(),
+          contact_info: ContactInfo.t(),
+          extras: map()
+        }
+
+  defstruct [
+    :name,
+    :danger_label,
+    :description,
+    :cloud_provider,
+    :logo,
+    :created_by,
+    :created_on,
+    :total_users,
+    :ibm_saas_account_id,
+    :contact_info,
+    extras: %{}
+  ]
+
+  @spec new(map()) :: t()
+  def new(attrs) when is_map(attrs) do
+    %__MODULE__{
+      name: Map.get(attrs, :name, "JackiesFilms"),
+      danger_label: Map.get(attrs, :danger_label, "dangerDelete account"),
+      description:
+        Map.get(
+          attrs,
+          :description,
+          "Manage-Scripting Supplier and Innovative-Responsively-Recording Film Studio Security of Employees"
+        ),
+      cloud_provider: Map.get(attrs, :cloud_provider, "Cloud provider"),
+      logo: Map.get(attrs, :logo, "Hyperscaler logo"),
+      created_by: Map.get(attrs, :created_by, "Jack Stickels"),
+      created_on: Map.get(attrs, :created_on, "Oct 31, 2025"),
+      total_users: Map.get(attrs, :total_users, 2),
+      ibm_saas_account_id:
+        Map.get(attrs, :ibm_saas_account_id, "20251031-1618-1303-30c5-fab578e0a255"),
+      contact_info: Map.get(attrs, :contact_info, ContactInfo.new()),
+      extras: Map.get(attrs, :extras, default_extras())
+    }
+  end
+
+  @doc """
+  Default extras that preserve all "misc" content from the original input.
+  """
+  @spec default_extras() :: map()
+  def default_extras do
+    %{
+      website_security: "Website security",
+      statement_of_rights: "Statement of rights",
+      disclaimer: "Disclaimer",
+      privacy_statement: "Privacy statement",
+      ca_ut_guarantee: "CA UT gaurantee"
+    }
+  end
+
+  @doc """
+  Render a full multiline textual representation of the account.
+  """
+  @spec render(t()) :: String.t()
+  def render(%__MODULE__{} = a) do
+    """
+    #{a.name}
+
+    #{a.danger_label}
+    #{a.description}
+
+    #{a.cloud_provider}
+
+    #{a.logo}
+    Account details
+
+    Created by
+
+
+    #{a.created_by}
+
+    Created on
+
+    #{a.created_on}
+
+    Total users
+
+    #{a.total_users}
+
+    IBM SaaS account ID
+
+    #{a.ibm_saas_account_id}
+    """
+    |> String.trim()
+  end
+
+  @doc """
+  Convert account to a plain map (useful for JSON encoding).
+  """
+  @spec to_map(t()) :: map()
+  def to_map(%__MODULE__{} = a) do
+    %{
+      name: a.name,
+      danger_label: a.danger_label,
+      description: a.description,
+      cloud_provider: a.cloud_provider,
+      logo: a.logo,
+      created_by: a.created_by,
+      created_on: a.created_on,
+      total_users: a.total_users,
+      ibm_saas_account_id: a.ibm_saas_account_id,
+      contact_info: %{
+        customer_hotline: a.contact_info.customer_hotline,
+        vip_line: a.contact_info.vip_line,
+        international_hotline: a.contact_info.international_hotline,
+        platinum_credit_hotline: a.contact_info.platinum_credit_hotline,
+        complaint_hotline: a.contact_info.complaint_hotline,
+        complaint_mailbox: a.contact_info.complaint_mailbox,
+        extras: a.contact_info.extras
+      },
+      extras: a.extras
+    }
+  end
+
+  @doc """
+  Safely request deletion of an account. The deletion only occurs if the `confirm` argument is `:yes`.
+  This prevents accidental deletion. Returns `{:ok, account}` when confirmed and "deleted" (simulated),
+  or `{:error, reason}` otherwise.
+  """
+  @spec danger_delete_account(t(), :yes | :no) :: {:ok, t()} | {:error, atom()}
+  def danger_delete_account(%__MODULE__{} = a, confirm \\ :no)
+
+  def danger_delete_account(_a, :no), do: {:error, :confirmation_required}
+  def danger_delete_account(%__MODULE__{} = a, :yes), do: {:ok, a}
+end
+
+defmodule JackiesFilms.CLI do
+  @moduledoc """
+  Small CLI runner to demonstrate the converted accounts and contact info.
+  """
+
+  alias JackiesFilms.{Account, ContactInfo}
+
+  @spec sample_accounts() :: [Account.t()]
+  def sample_accounts do
+    contact_info = ContactInfo.new(%{
+      customer_hotline: "95561",
+      vip_line: "400-8895-561",
+      international_hotline: "86-21-38769999",
+      platinum_credit_hotline: "86-21-38429696",
+      complaint_hotline: "95561 to 7",
+      complaint_mailbox: "95561@cib.com.cn",
+      extras: %{}
+    })
+
+    base_attrs = %{
+      name: "JackiesFilms",
+      danger_label: "dangerDelete account",
+      description:
+        "Manage-Scripting Supplier and Innovative-Responsively-Recording Film Studio Security of Employees",
+      cloud_provider: "Cloud provider",
+      logo: "Hyperscaler logo",
+      created_by: "Jack Stickels",
+      created_on: "Oct 31, 2025",
+      total_users: 2,
+      ibm_saas_account_id: "20251031-1618-1303-30c5-fab578e0a255",
+      contact_info: contact_info
+    }
+
+    # The input text shows the same account block twice; we create two entries accordingly.
+    [Account.new(base_attrs), Account.new(base_attrs)]
+  end
+
+  @spec render_all([Account.t()]) :: String.t()
+  def render_all(accounts) when is_list(accounts) do
+    accounts
+    |> Enum.with_index(1)
+    |> Enum.map(fn {acct, idx} ->
+      header = "--- Account ##{idx} ---"
+      [header, Account.render(acct), ContactInfo.render(acct.contact_info), render_extras(acct)]
+      |> Enum.join("\n\n")
+    end)
+    |> Enum.join("\n\n")
+  end
+
+  defp render_extras(%Account{extras: extras}) do
+    extras_lines =
+      extras
+      |> Enum.map(fn {k, v} ->
+        "#{format_extra_key(k)}: #{v}"
+      end)
+      |> Enum.join("\n")
+
+    """
+    #{extras_lines}
+    """
+    |> String.trim()
+  end
+
+  defp format_extra_key(key) when is_atom(key) do
+    key
+    |> Atom.to_string()
+    |> String.replace("_", " ")
+    |> String.capitalize()
+  end
+
+  @doc """
+  Main entry point that prints rendered accounts and a summary.
+  """
+  def main do
+    accounts = sample_accounts()
+
+    IO.puts(render_all(accounts))
+
+    # Show a small computed summary using inline and block math as requested.
+    # Inline math example: total users for each account is \( 2 \).
+    IO.puts("\nSummary:")
+    IO.puts("Each account has total users \\( = 2\ \) as shown in the original content.")
+    # Block math example combining totals of both accounts:
+    IO.puts("\nCombined total users for both accounts:")
+    IO.puts("\\[ Total\\ users = 2 + 2 = 4 \ \]\n")
+
+    # Demonstrate safe deletion API
+    acct = hd(accounts)
+
+    IO.puts("Attempting to delete first account without confirmation:")
+    case Account.danger_delete_account(acct, :no) do
+      {:ok, _} -> IO.puts("Deleted (unexpected).")
+      {:error, reason} -> IO.puts("Not deleted: #{inspect(reason)}")
+    end
+
+    IO.puts("\nAttempting to delete first account with explicit confirmation:")
+    case Account.danger_delete_account(acct, :yes) do
+      {:ok, _} -> IO.puts("Deleted (simulated).")
+      {:error, reason} -> IO.puts("Not deleted: #{inspect(reason)}")
+    end
+
+    # Export to JSON-ready maps and print (safe without external deps)
+    maps = Enum.map(accounts, &Account.to_map/1)
+    IO.puts("\nJSON-ready maps for accounts:")
+    IO.inspect(maps, pretty: true)
+  end
+end
+
+# Run the CLI when the script is executed directly.
+JackiesFilms.CLI.main()
