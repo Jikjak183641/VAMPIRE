@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "htflow": {
+      "command": "htflow",
+      "args": [
+        "mcp-server"
+      ],
+      "env": {
+        "NODE_ENV": "production",
+        "HTFLOW_MCP_MODE": "true"
+      },
+      "description": "HTFlow MCP Server for Webflow-compatible development",
+      "version": "1.9.2.61"
+    }
+  }
+}

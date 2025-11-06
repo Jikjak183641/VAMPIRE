@@ -1,0 +1,28 @@
+# Git ignore for VAMPIRE repository
+# Secrets and environment
+.env
+*.env
+*.pem
+*.key
+*.crt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+/.vscode/
+*.swp
+.idea/
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+
+# Ignore local DB passwords and generated backups
+*.sql.gz
+*.sql.bz2
+*.bak

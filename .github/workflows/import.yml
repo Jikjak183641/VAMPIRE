@@ -1,0 +1,26 @@
+name: Import NYC_mysql.sql
+
+on:
+  workflow_dispatch:
+
+jobs:
+  import-sql:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install mysql client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y default-mysql-client
+
+      - name: Run import script
+        env:
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_DB:   ${{ secrets.MYSQL_DB }}
+          MYSQL_PWD:  ${{ secrets.MYSQL_PWD }}
+        run: |
+          chmod +x ./import_to_azure_mysql.sh
+          ./import_to_azure_mysql.sh NYC_mysql.sql
